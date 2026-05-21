@@ -74,7 +74,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           {product.salePrice && (
             <span className="text-sm text-gray-400 line-through">
               ₦{product.price.toLocaleString()}
-            </span
+            </span>
           )}
         </div >
 
