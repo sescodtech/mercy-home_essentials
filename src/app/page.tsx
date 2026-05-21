@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { FeaturedProducts } from '@/components/product/FeaturedProducts';
 import { Testimonials } from '@/components/shared/Testimonials';
+import { FlashSaleSection } from '@/components/home/FlashSaleSection';
+import { TrendingProducts } from '@/components/home/TrendingProducts';
+import { MOCK_PRODUCTS } from '@/services/products';
 
 export default function HomePage() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -155,6 +158,18 @@ export default function HomePage() {
       </section>
 
       <FeaturedProducts limit={8} />
+
+      {/* Flash Sale Section */}
+      <FlashSaleSection
+        products={MOCK_PRODUCTS.filter((p) => p.onSale).slice(0, 4)}
+        endTime={new Date(Date.now() + 6 * 60 * 60 * 1000)}
+      />
+
+      {/* Trending Products */}
+      <TrendingProducts
+        products={MOCK_PRODUCTS.slice(8, 16)}
+        title="Customer Favorites"
+      />
 
       {/* Brand Philosophy Section */}
       <section className="py-24 bg-dark text-white overflow-hidden">

@@ -4,29 +4,83 @@ import { useState, useEffect } from 'react';
 import { MOCK_PRODUCTS } from '@/services/products';
 import { ProductCard } from '@/components/product/ProductCard';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { SlidersHorizontal, Search, Filter } from 'lucide-react';
+import { ProductFilters, FilterState } from '@/components/product/ProductFilters';
+import { SearchBar } from '@/components/product/SearchBar';
+import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ShopPage() {
   const [products, setProducts] = useState(MOCK_PRODUCTS);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({
+    priceMin: 0,
+    priceMax: 100000,
+    categories: [],
+    rating: 0,
+    sortBy: 'featured',
+  });
 
   useEffect(() => {
-    let filtered = MOCK_PRODUCTS.filter((p) =>
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase())
+    let filtered = MOCK_PRODUCTS;
+
+    // Apply category filter
+    if (filters.categories.length > 0) {
+      filtered = filtered.filter((p) =>
+        filters.categories.includes(p.category)
+      );
+    }
+
+    // Apply price filter
+    filtered = filtered.filter(
+      (p) => p.price >= filters.priceMin && p.price <= filters.priceMax
     );
 
-    if (activeCategory !== 'all') {
-      filtered = filtered.filter((p) => p.category === activeCategory);
+    // Apply rating filter
+    if (filters.rating > 0) {
+      filtered = filtered.filter((p) => p.rating >= filters.rating);
+    }
+
+    // Apply sorting
+    switch (filters.sortBy) {
+      case 'price-low':
+        filtered = filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        filtered = filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        filtered = filtered.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'newest':
+        filtered = filtered.reverse();
+        break;
     }
 
     setProducts(filtered);
-  }, [searchQuery, activeCategory]);
+  }, [filters]);
+
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      const searchResults = MOCK_PRODUCTS.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query.toLowerCase()) ||
+          p.description.toLowerCase().includes(query.toLowerCase())
+      );
+      setProducts(searchResults);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      priceMin: 0,
+      priceMax: 100000,
+      categories: [],
+      rating: 0,
+      sortBy: 'featured',
+    });
+  };
 
   const categories = [
     { id: 'all', label: 'All Collections', emoji: '' },
@@ -39,121 +93,136 @@ export default function ShopPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16 min-h-screen bg-white">
-      {/* Boutique Header */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
+    <div className="min-h-screen bg-white pt-20">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 py-12 space-y-8">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Shop', href: '/shop' },
+          ]}
+        />
+
         <div className="space-y-4">
-          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">Curated Inventory</p>
+          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">
+            Curated Inventory
+          </p>
           <h1 className="font-display text-5xl md:text-6xl font-black tracking-tighter text-dark leading-tight">
-            {activeCategory === 'all' ? 'The Full Collection' : `The ${activeCategory} Edit`}
+            The Full Collection
           </h1>
           <p className="text-gray-400 text-lg font-light max-w-xl">
             A symphony of design and utility. Explore our most exclusive pieces crafted for the modern home.
           </p>
-        </div >
+        </div>
 
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="relative flex-1 md:w-80">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 transition-colors group-focus:text-accent" />
-            <Input
-              placeholder="Search the archives..."
-              className="pl-11 pr-4 h-14 rounded-full bg-gray-50 border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-accent/20 transition-all text-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+        {/* Search Bar */}
+        <SearchBar
+          onSearch={handleSearch}
+          placeholder="Search products..."
+        />
+      </div>
+
+      {/* Category Bar */}
+      <div className="border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 flex items-center gap-3 overflow-x-auto py-4 no-scrollbar">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              className="px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all hover:bg-dark hover:text-white text-gray-600"
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="flex gap-12">
+          {/* Sidebar Filters - Desktop */}
+          <aside className="hidden lg:block w-72 shrink-0 sticky top-32 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <ProductFilters
+              filters={filters}
+              onFilterChange={setFilters}
+              onClearFilters={handleClearFilters}
             />
-          </div >
-          <Button
-            variant="outline"
-            className="h-14 px-6 rounded-full gap-2 font-bold border-gray-200 hover:bg-gray-50 transition-all"
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-          >
-            <Filter className="w-4 h-4" /> Filters
-          </Button>
-        </div >
-      </div >
+          </aside>
 
-      {/* Minimalist Category Bar */}
-      <div className="flex items-center gap-3 overflow-x-auto pb-12 no-scrollbar border-b border-gray-100 mb-12">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
-            className={cn(
-              "px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap",
-              activeCategory === cat.id
-                ? "bg-dark text-white shadow-lg scale-105"
-                : "bg-transparent text-gray-400 hover:text-dark hover:bg-gray-100"
-            )}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div >
+          {/* Mobile Filter Button */}
+          <div className="lg:hidden mb-6">
+            <Button
+              variant="outline"
+              className="w-full rounded-lg gap-2 justify-center"
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              <Filter className="w-4 h-4" /> Filters
+            </Button>
+          </div>
 
-      <div className="flex gap-12">
-        {/* Sophisticated Sidebar */}
-        <aside className="hidden lg:block w-72 shrink-0 space-y-12">
-          <div className="space-y-10">
-            <div className="space-y-6">
-              <h3 className="text-[11px] font-black uppercase tracking-widest text-dark border-b border-gray-100 pb-4">Price Spectrum</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-xs font-medium text-gray-500">
-                  <span>Min</span>
-                  <span>Max</span>
-                </div >
-                <div className="flex items-center gap-3">
-                  <Input type="number" placeholder="0" className="h-10 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200" />
-                  <Input type="number" placeholder="10k" className="h-10 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200" />
-                </div >
-              </div >
-            </div >
-
-            <div className="space-y-6">
-              <h3 className="text-[11px] font-black uppercase tracking-widest text-dark border-b border-gray-100 pb-4">Sorting Order</h3>
-              <div className="grid grid-cols-1 gap-2">
-                {['Featured', 'Price: Low to High', 'Price: High to Low', 'Top Rated'].map((option) => (
-                  <button key={option} className="text-left px-3 py-2 rounded-lg text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-dark transition-all">
-                    {option}
-                  </button>
-                ))}
-              </div >
-            </div >
-          </div >
-        </aside>
-
-        {/* Product Gallery */}
-        <div className="flex-1">
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
-              {products.map((product, idx) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                >
-                  <ProductCard key={product.id} product={product} />
-                </motion.div>
-              ))}
-            </div >
-          ) : (
-            <div className="text-center py-32 bg-gray-50 rounded-[3rem] border border-dashed border-gray-200">
-              <div className="text-6xl mb-6">🔍</div>
-              <h3 className="font-display text-3xl font-black mb-4">No artifacts found</h3>
-              <p className="text-gray-500 text-lg font-light mb-10 max-w-md mx-auto">
-                Our archives currently hold no pieces matching your specific criteria.
-              </p>
-              <Button
-                variant="outline"
-                className="rounded-full px-8 py-6 font-bold hover:bg-dark hover:text-white transition-all"
-                onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
+          {/* Mobile Filters - Overlay */}
+          <AnimatePresence>
+            {isFilterOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                onClick={() => setIsFilterOpen(false)}
               >
-                Reset All Filters
-              </Button>
-            </div >
-          )}
-        </div >
-      </div >
+                <motion.div
+                  initial={{ x: -400 }}
+                  animate={{ x: 0 }}
+                  exit={{ x: -400 }}
+                  className="fixed left-0 top-0 h-full w-80 bg-white p-6 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h3 className="text-lg font-bold mb-6">Filters</h3>
+                  <ProductFilters
+                    filters={filters}
+                    onFilterChange={setFilters}
+                    onClearFilters={handleClearFilters}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Product Grid */}
+          <div className="flex-1">
+            {products.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+                {products.map((product, idx) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-32 bg-gray-50 rounded-[3rem] border border-dashed border-gray-200">
+                <div className="text-6xl mb-6">🔍</div>
+                <h3 className="font-display text-3xl font-black mb-4">
+                  No products found
+                </h3>
+                <p className="text-gray-500 text-lg font-light mb-10 max-w-md mx-auto">
+                  Our archives currently hold no pieces matching your specific criteria.
+                </p>
+                <Button
+                  variant="outline"
+                  className="rounded-full px-8 py-6 font-bold hover:bg-dark hover:text-white transition-all"
+                  onClick={handleClearFilters}
+                >
+                  Reset All Filters
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
