@@ -1,18 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Package, ShoppingCart, Users, DollarSign, TrendingUp, Settings } from 'lucide-react';
+import { Package, ShoppingCart, Users, DollarSign, TrendingUp, Settings, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { StatsCard } from '@/components/admin/StatsCard';
+import { OrderTimeline } from '@/components/admin/OrderTimeline';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
-  const stats = [
-    { label: 'Total Revenue', value: '$12,450', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-50' },
-    { label: 'Total Orders', value: '342', icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Total Products', value: '128', icon: Package, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { label: 'Active Customers', value: '1,204', icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
-  ];
-
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
@@ -26,24 +22,35 @@ export default function AdminDashboard() {
       </div >
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4"
-          >
-            <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center", stat.bg)}>
-              <stat.icon className={cn("w-6 h-6", stat.color)} />
-            </div >
-            <div>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-              <p className="text-2xl font-black text-dark">{stat.value}</p>
-            </div >
-          </motion.div>
-        ))}
-      </div >
+        <StatsCard
+          title="Total Revenue"
+          value="₦12,450"
+          change={{ value: 12, isPositive: true }}
+          icon={<DollarSign className="w-6 h-6" />}
+          color="green"
+        />
+        <StatsCard
+          title="Total Orders"
+          value="342"
+          change={{ value: 8, isPositive: true }}
+          icon={<ShoppingCart className="w-6 h-6" />}
+          color="blue"
+        />
+        <StatsCard
+          title="Total Products"
+          value="128"
+          change={{ value: 3, isPositive: false }}
+          icon={<Package className="w-6 h-6" />}
+          color="orange"
+        />
+        <StatsCard
+          title="Active Customers"
+          value="1,204"
+          change={{ value: 15, isPositive: true }}
+          icon={<Users className="w-6 h-6" />}
+          color="blue"
+        />
+      </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Recent Orders */}
@@ -118,12 +125,4 @@ export default function AdminDashboard() {
       </div >
     </div >
   );
-}
-
-function ArrowRight({ className }: { className: string }) {
-  return <svg xmlns="http://www.w3.org/2000/svg" className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>;
-}
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(' ');
 }
