@@ -1,6 +1,5 @@
 'use client';
 
-import { Slider } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
