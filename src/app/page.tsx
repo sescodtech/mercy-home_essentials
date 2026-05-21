@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Truck, ShieldCheck, RotateCcw, Headphones } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Truck, ShieldCheck, RotateCcw, Headphones, ShoppingBag, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { FeaturedProducts } from '@/components/product/FeaturedProducts';
@@ -11,8 +11,12 @@ import { Testimonials } from '@/components/shared/Testimonials';
 export default function HomePage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+
     async function fetchCategories() {
       try {
         const res = await fetch('/api/categories');
@@ -25,178 +29,193 @@ export default function HomePage() {
       }
     }
     fetchCategories();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative bg-dark text-white overflow-hidden min-h-[80vh] flex items-center">
-        <div className="absolute inset-0 opacity-20 pointer-events-none"
-             style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)', backgroundSize: '36px 36px' }}
-        />
-        <div className="absolute top-[-10%] right-[-10%] w-1/2 h-1/2 rounded-full opacity-20 blur-3xl bg-accent" />
+    <div className="flex flex-col bg-white">
+      {/* Cinematic Hero Section */}
+      <section className="relative h-screen w-full overflow-hidden bg-dark">
+        {/* Background Image with a soft zoom effect */}
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute inset-0 z-0"
+        >
+          <img
+            src="https://images.unsplash.com/photo-160058459176C-89234567890?auto=format&fit=crop&w=1920&q=80"
+            className="w-full h-full object-cover opacity-60"
+            alt="Luxury Home Background"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/20 to-dark" />
+        </motion.div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full py-16 grid md:grid-cols-2 gap-16 items-center relative z-10">
+        <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-center items-start">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-3xl space-y-8"
           >
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold text-orange-300">
-              <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse" />
-              Limited Time Offer
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em]">
+              <span className="w-1 h-1 bg-accent rounded-full animate-pulse" />
+              Est. 2024 • Premium Curations
             </div >
-            <h1 className="font-display text-5xl md:text-7xl font-black leading-tight">
-              Upgrade Your<br />
-              <span className="text-accent">Home & Office</span><br />
-              Experience
+
+            <h1 className="font-display text-6xl md:text-8xl font-black text-white leading-[1.1] tracking-tight">
+              Refining the Art of <br />
+              <span className="text-accent italic font-serif">Modern Living.</span>
             </h1>
-            <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
-              Premium gadgets, kitchen essentials & office tools curated for modern living.
-              Experience luxury in every detail.
+
+            <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-xl font-light">
+              A meticulously curated collection of premium home and office essentials designed for those who appreciate the intersection of luxury and functionality.
             </p>
-            <div className="flex flex-wrap gap-4">
+
+            <div className="flex flex-wrap gap-6 pt-4">
               <Link href="/shop">
-                <Button size="lg" className="gap-2 group">
-                  Shop Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Button size="lg" className="h-16 px-10 rounded-full bg-accent hover:bg-accent/90 text-white font-bold gap-3 group overflow-hidden relative">
+                  <span className="relative z-10">Explore Collection</span>
+                  <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/about">
-                <Button variant="outline" size="lg" className="text-white border-white/20 hover:bg-white/10">
-                  Our Story
+                <Button variant="outline" size="lg" className="h-16 px-10 rounded-full text-white border-white/30 hover:bg-white/10 backdrop-blur-sm font-bold">
+                  The Story
                 </Button>
               </Link>
             </div >
-
-            <div className="flex gap-8 pt-8 border-t border-white/10">
-              <div className="text-start">
-                <div className="text-3xl font-black">5,000+</div>
-                <div className="text-[10px] text-gray-500 uppercase tracking-widest">Happy Customers</div>
-              </div >
-              <div className="text-start">
-                <div className="text-3xl font-black">200+</div>
-                <div className="text-[10px] text-gray-500 uppercase tracking-widest">Premium Products</div>
-              </div >
-              <div className="text-start">
-                <div className="text-3xl font-black">4.9★</div>
-                <div className="text-[10px] text-gray-500 uppercase tracking-widest">Avg Rating</div>
-              </div >
-            </div >
           </motion.div>
-
-          <div className="hidden md:grid grid-cols-2 gap-4 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="space-y-4"
-            >
-              <div className="h-64 rounded-3xl overflow-hidden shadow-2xl group cursor-pointer relative">
-                <img src="https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?auto=format&fit=crop&w=500&q=80" alt="Kitchen" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <span className="absolute bottom-4 left-4 text-white text-xs font-bold bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">Kitchen</span>
-              </div >
-              <div className="h-48 rounded-3xl overflow-hidden shadow-2xl group cursor-pointer relative">
-                <img src="https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=500&q=80" alt="Office" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <span className="absolute bottom-4 left-4 text-white text-xs font-bold bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">Office</span>
-              </div >
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="space-y-4 pt-8"
-            >
-              <div className="h-48 rounded-3xl overflow-hidden shadow-2xl group cursor-pointer relative">
-                <img src="https://images.unsplash.com/photo-1541140532154-b024d705b90a?auto=format&fit=crop&w=500&q=80" alt="Tech" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <span className="absolute bottom-4 left-4 text-white text-xs font-bold bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">Tech</span>
-              </div >
-              <div className="h-64 rounded-3xl overflow-hidden shadow-2xl group cursor-pointer relative">
-                <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=500&q=80" alt="Gaming" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <span className="absolute bottom-4 left-4 text-white text-xs font-bold bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">Gaming</span>
-              </div >
-            </motion.div>
-          </div >
         </div >
+
+        {/* Bottom Gradient Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent" />
       </section>
 
-      {/* Trust Bar */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4">
-          <TrustItem icon={<Truck className="w-5 h-5 text-accent" />} title="Free Delivery" desc="Orders over ₦10,000" />
-          <TrustItem icon={<ShieldCheck className="w-5 h-5 text-accent" />} title="Quality Guaranteed" desc="100% authentic" />
-          <TrustItem icon={<RotateCcw className="w-5 h-5 text-accent" />} title="Easy Returns" desc="14-day policy" />
-          <TrustItem icon={<Headphones className="w-5 h-5 text-accent" />} title="24/7 Support" desc="Always here for you" />
+      {/* Minimalist Trust Strip */}
+      <div className="bg-white py-12 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <TrustItem icon={<Truck className="w-5 h-5" />} title="Global Shipping" desc="Complimentary on premium orders" />
+          <TrustItem icon={<ShieldCheck className="w-5 h-5" />} title="Certified Quality" desc="100% authentic luxury goods" />
+          <TrustItem icon={<RotateCcw className="w-5 h-5" />} title="Bespoke Returns" desc="White-glove 14-day policy" />
+          <TrustItem icon={<Headphones className="w-5 h-5" />} title="Private Concierge" desc="Dedicated 24/7 assistance" />
         </div >
       </div >
 
-      {/* Categories Preview */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
-        <div className="flex items-end justify-between mb-12">
-          <div >
-            <p className="text-[11px] font-bold uppercase tracking-widest text-accent mb-3">Curated Collections</p>
-            <h2 className="font-display text-4xl font-black">Shop by Category</h2>
+      {/* Editorial Categories Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
+            <div className="space-y-4">
+              <p className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">The Collections</p>
+              <h2 className="font-display text-5xl font-black tracking-tight">Curated by <br />Expert Designers</h2>
+            </div >
+            <Link href="/shop">
+              <Button variant="outline" className="rounded-full px-8 py-6 font-bold group">
+                View All Collections <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div >
-          <Link href="/shop">
-            <Button variant="outline" className="hidden sm:flex gap-2">
-              View All <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto">
+            {/* Feature Category 1 (Large) */}
+            <div className="md:col-span-2 relative h-[600px] rounded-3xl overflow-hidden group cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="Kitchen" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-12 left-12 space-y-4">
+                <h3 className="text-white text-4xl font-black">Culinary Arts</h3>
+                <p className="text-gray-300 max-w-xs font-light">Elevate your kitchen with professional-grade essentials.</p>
+                <Link href="/shop?cat=kitchen" className="inline-flex items-center gap-2 text-white font-bold text-sm group">
+                  Shop Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div >
+            </div >
+
+            {/* Feature Category 2 (Small) */}
+            <div className="grid grid-cols-1 gap-6 h-full">
+              <div className="relative h-1/2 rounded-3xl overflow-hidden group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="Office" />
+                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute bottom-6 left-6 text-white">
+                  <h3 className="text-xl font-bold">Executive Office</h3>
+                  <Link href="/shop?cat=office" className="text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">Discover $\rightarrow$</Link>
+                </div >
+              </div >
+              <div className="relative h-1/2 rounded-3xl overflow-hidden group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1541140532154-b024d705b90a?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="Tech" />
+                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute bottom-6 left-6 text-white">
+                  <h3 className="text-xl font-bold">Digital Innovation</h3>
+                  <Link href="/shop?cat=tech" className="text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">Discover $\rightarrow$</Link>
+                </div >
+              </div >
+            </div >
+          </div >
         </div >
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-             {[...Array(6)].map((_, i) => (
-               <div key={i} className="h-48 bg-gray-100 rounded-3xl animate-pulse" />
-             ))}
-          </div >
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat) => (
-              <CategoryCard
-                key={cat._id}
-                name={cat.name}
-                emoji={cat.emoji || '📦'}
-                href={`/shop?cat=${cat.slug}`}
-                img={cat.image}
-              />
-            ))}
-          </div >
-        )}
       </section>
 
       <FeaturedProducts limit={8} />
+
+      {/* Brand Philosophy Section */}
+      <section className="py-24 bg-dark text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+          <div className="relative">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative z-10 rounded-3xl overflow-hidden shadow-2xl"
+            >
+              <img src="https://images.unsplash.com/photo-1513518343862-379775C5700c?auto=format&fit=crop&w=800&q=80" alt="Philosophy" className="w-full h-auto" />
+            </motion.div>
+            <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-accent rounded-full blur-3xl opacity-20" />
+          </div >
+          <div className="space-y-8">
+            <p className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">Our Philosophy</p>
+            <h2 className="font-display text-5xl font-black leading-tight">Beyond utility, <br /> we curate <span className="italic font-serif text-gray-400">experience.</span></h2>
+            <p className="text-gray-400 text-lg leading-relaxed font-light">
+              At Mercy Home Essentials, we believe that the objects you surround yourself with define the energy of your space. We don't just sell products; we source pieces that inspire productivity, comfort, and a sense of effortless luxury.
+            </p>
+            <Link href="/about">
+              <Button variant="outline" className="rounded-full px-8 py-6 text-white border-white/20 hover:bg-white/10 font-bold">
+                Learn More About Us
+              </Button>
+            </Link>
+          </div >
+        </div >
+      </section>
+
       <Testimonials />
+
+      {/* Newsletter Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
+          <h2 className="font-display text-4xl font-black tracking-tight">Join the Inner Circle</h2>
+          <p className="text-gray-500 text-lg font-light">Receive early access to limited drops and private invitations to our seasonal curation events.</p>
+          <div className="flex max-w-md mx-auto gap-3">
+            <input
+              type="email"
+              placeholder="email@luxury.com"
+              className="flex-1 p-4 rounded-full border border-gray-200 outline-none focus:ring-2 focus:ring-accent/20 transition-all"
+            />
+            <Button className="rounded-full px-8 py-4 font-bold">Join</Button>
+          </div >
+        </div >
+      </section>
     </div>
   );
 }
 
 function TrustItem({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
   return (
-    <div className="flex items-center gap-4 py-6 px-4">
-      <div className="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0">
+    <div className="flex items-center gap-4 py-4">
+      <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center shrink-0 text-accent">
         {icon}
       </div >
       <div className="text-start">
-        <div className="font-bold text-sm">{title}</div>
-        <div className="text-gray-400 text-xs">{desc}</div>
+        <div className="font-bold text-sm text-dark">{title}</div>
+        <div className="text-gray-400 text-[10px] uppercase tracking-widest font-medium">{desc}</div>
       </div >
-    </div >
-  );
-}
-
-function CategoryCard({ name, emoji, href, img }: { name: string, emoji: string, href: string, img: string }) {
-  return (
-    <Link href={href} className="group relative h-48 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all">
-      <img src={img} alt={name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-      <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent" />
-      <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3 text-white">
-        <span className="text-xl">{emoji}</span>
-        <span className="font-bold text-sm">{name}</span>
-      </div >
-    </Link>
+    </div>
   );
 }
