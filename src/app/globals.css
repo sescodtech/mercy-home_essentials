@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FEFCF8;
-  --foreground: #0D1117;
-  --accent: #FF6B35;
-  --dark: #0D1117;
-  --cream: #FEFCF8;
+  --background: #F9F9F7;
+  --foreground: #0A0A0A;
+  --accent: #C5A059;
+  --dark: #0A0A0A;
+  --cream: #F9F9F7;
+  --surface: #FFFFFF;
+  --muted: #E5E5E0;
 }
 
 @theme inline {
@@ -14,14 +16,18 @@
   --color-accent: var(--accent);
   --color-dark: var(--dark);
   --color-cream: var(--cream);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0D1117;
-    --foreground: #FEFCF8;
+    --background: #0A0A0A;
+    --foreground: #F9F9F7;
+    --surface: #121212;
+    --muted: #222222;
   }
 }
 
@@ -29,8 +35,21 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-display {
   font-family: var(--font-display);
+}
+
+/* Luxury Utility Classes */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.text-balance {
+  text-wrap: balance;
 }

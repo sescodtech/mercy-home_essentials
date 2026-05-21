@@ -1,69 +1,274 @@
+'use client';
+
+import Link from 'next/link';
+import { Mail, Phone, MapPin, Truck, ShieldCheck, RotateCcw, Headphones, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { useToast } from '@/hooks/useToast';
+
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { success, error } = useToast();
+
+  const handleNewsletterSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      success('Successfully subscribed to newsletter!');
+      setEmail('');
+    } catch (err) {
+      error('Failed to subscribe. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <footer className="bg-dark text-white pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-sm bg-gradient-to-br from-accent to-orange-600">
-                M
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-display font-black text-lg tracking-tight">MERCY HOME</span>
-                <span className="text-accent text-[10px] tracking-widest font-black uppercase">ESSENTIALS</span>
-              </div>
+    <footer className="bg-dark text-white">
+      {/* Trust Strip */}
+      <div className="border-b border-gray-800 py-12">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <Truck className="w-5 h-5 text-accent" />
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Your trusted partner for a modern home and efficient workspace. Premium curated essentials for every corner of your life.
-            </p>
-            <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-all">FB</a>
-              <a href="#" className="w-9 h-9 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-pink-600 transition-all">IG</a>
-              <a href="#" className="w-9 h-9 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-green-500 transition-all">WA</a>
+            <div className="text-sm">
+              <div className="font-bold text-white">Global Shipping</div>
+              <div className="text-gray-400 text-xs">Free on premium orders</div>
             </div>
           </div>
-
-          <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-gray-500 mb-6">Shop</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li><a href="/shop?cat=kitchen" className="hover:text-white transition-colors">Kitchen & Home</a></li>
-              <li><a href="/shop?cat=office" className="hover:text-white transition-colors">Office Supplies</a></li>
-              <li><a href="/shop?cat=tech" className="hover:text-white transition-colors">Tech Gadgets</a></li>
-              <li><a href="/shop?cat=security" className="hover:text-white transition-colors">Security</a></li>
-              <li><a href="/shop?cat=wellness" className="hover:text-white transition-colors">Wellness</a></li>
-              <li><a href="/shop?cat=gaming" className="hover:text-white transition-colors">Gaming</a></li>
-            </ul>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-accent" />
+            </div>
+            <div className="text-sm">
+              <div className="font-bold text-white">Certified Quality</div>
+              <div className="text-gray-400 text-xs">100% authentic goods</div>
+            </div>
           </div>
-
-          <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-gray-500 mb-6">Support</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li><a href="/about" className="hover:text-white transition-colors">Our Story</a></li>
-              <li><a href="/contact" className="hover:text-white transition-colors">Contact Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Shipping Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Returns & Refunds</a></li>
-            </ul>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <RotateCcw className="w-5 h-5 text-accent" />
+            </div>
+            <div className="text-sm">
+              <div className="font-bold text-white">Easy Returns</div>
+              <div className="text-gray-400 text-xs">14-day guarantee</div>
+            </div>
           </div>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <Headphones className="w-5 h-5 text-accent" />
+            </div>
+            <div className="text-sm">
+              <div className="font-bold text-white">24/7 Support</div>
+              <div className="text-gray-400 text-xs">Always ready to help</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-gray-500 mb-6">Newsletter</h4>
-            <p className="text-sm text-gray-400 mb-4">Get exclusive deals and first access to new arrivals.</p>
-            <form className="flex rounded-xl overflow-hidden border border-white/10 bg-white/5">
+      {/* Newsletter Section */}
+      <div className="border-b border-gray-800 py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="space-y-3">
+              <h3 className="text-2xl font-bold">Join the Mercy Circle</h3>
+              <p className="text-gray-400">
+                Get exclusive access to new collections, special offers, and insider tips from our curators.
+              </p>
+            </div>
+            <form onSubmit={handleNewsletterSubscribe} className="flex gap-2">
               <input
                 type="email"
-                placeholder="Email"
-                className="bg-transparent text-white px-4 py-2 text-sm w-full outline-none placeholder:text-gray-500"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                required
               />
-              <button className="px-4 bg-accent text-white font-bold text-xs hover:bg-orange-600 transition-all">JOIN</button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="rounded-lg px-6 bg-accent hover:bg-accent/90"
+              >
+                {loading ? 'Subscribing...' : 'Subscribe'}
+              </Button>
             </form>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-600 text-xs">
-          <span>© 2026 Mercy Home Essentials. All rights reserved.</span>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-gray-400">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-400">Terms of Service</a>
+      {/* Main Footer Content */}
+      <div className="py-16">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
+          {/* Brand */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center font-bold">
+                M
+              </div>
+              <div className="leading-tight">
+                <div className="font-bold text-white">MERCY HOME</div>
+                <div className="text-[10px] tracking-widest text-accent font-black">
+                  ESSENTIALS
+                </div>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Curated premium home, office, and tech essentials for the modern lifestyle.
+            </p>
+            <div className="flex gap-3 pt-4">
+              <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-accent transition-colors flex items-center justify-center">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-pink-600 transition-colors flex items-center justify-center">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-blue-400 transition-colors flex items-center justify-center">
+                <Twitter className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Shop */}
+          <div className="space-y-4">
+            <h4 className="font-bold text-white">Shop</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <Link href="/shop" className="hover:text-accent transition-colors">
+                  All Collections
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop?cat=kitchen" className="hover:text-accent transition-colors">
+                  Kitchen Luxe
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop?cat=office" className="hover:text-accent transition-colors">
+                  Executive Office
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop?cat=tech" className="hover:text-accent transition-colors">
+                  Digital Innovation
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop" className="hover:text-accent transition-colors">
+                  On Sale
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div className="space-y-4">
+            <h4 className="font-bold text-white">Support</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <Link href="/contact" className="hover:text-accent transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Shipping Info
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Returns
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Track Order
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="space-y-4">
+            <h4 className="font-bold text-white">Company</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <Link href="/" className="hover:text-accent transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Our Story
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Press
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="space-y-4">
+            <h4 className="font-bold text-white">Contact</h4>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li className="flex items-center gap-2">
+                <Phone className="w-4 h-4" />
+                <span>+234 (0) 123 456 7890</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                <span>hello@mercyhome.com</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 mt-0.5" />
+                <span>Lagos, Nigeria</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Footer */}
+        <div className="border-t border-gray-800 pt-8 space-y-6">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid md:grid-cols-2 gap-6 text-xs text-gray-400">
+              <div className="flex gap-4">
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Privacy Policy
+                </Link>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Terms of Service
+                </Link>
+                <Link href="#" className="hover:text-accent transition-colors">
+                  Cookie Policy
+                </Link>
+              </div>
+              <div className="md:text-right">
+                © 2024 Mercy Home Essentials. All rights reserved.
+              </div>
+            </div>
           </div>
         </div>
       </div>
