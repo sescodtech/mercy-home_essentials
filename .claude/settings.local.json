@@ -4,7 +4,9 @@
       "Bash(npx create-next-app@latest *)",
       "Bash(New-Item *)",
       "Bash(npm run *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
