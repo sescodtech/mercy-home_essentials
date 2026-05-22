@@ -118,7 +118,7 @@ export default function Navbar() {
         {/* Right Actions */}
         <div className="flex items-center gap-4 relative z-20">
           <div className="hidden sm:flex items-center gap-2">
-            <Link href="/account" className={cn(
+            <Link href="/user/dashboard" className={cn(
               "p-2 rounded-full transition-all hover:bg-white/10",
               scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"
             )}>

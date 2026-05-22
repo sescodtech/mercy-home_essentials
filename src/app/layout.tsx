@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ToastProvider } from "@/providers/ToastProvider";
 import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
 
 export const metadata: Metadata = {
   title: "Mercy Home Essentials — Premium Home, Office & Tech",
@@ -20,6 +21,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans">
         <div className="flex flex-col min-h-screen">
+          <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
