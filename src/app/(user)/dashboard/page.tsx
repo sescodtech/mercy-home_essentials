@@ -8,7 +8,8 @@ import {
   ChevronRight,
   Package,
   TrendingUp,
-  CreditCard
+  CreditCard,
+  User
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
