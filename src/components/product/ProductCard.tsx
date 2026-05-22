@@ -120,18 +120,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         isOpen={isQuickViewOpen}
         onClose={() => setIsQuickViewOpen(false)}
         product={
-          product.stock !== undefined
-            ? {
-                ...product,
-                salePrice: product.salePrice,
-                description: product.description || 'Premium product from Mercy Home launc',
-              }
-            : {
-                ...product,
-                stock: 10,
-                salePrice: product.salePrice,
-                description: product.description || 'Premium product from Mercy Home launc',
-              }
+          {
+            ...product,
+            stock: product.stock ?? 10,
+            description: product.description || 'Premium product from Mercy Home Essentials.',
+          } as any
         }
       />
     </>
