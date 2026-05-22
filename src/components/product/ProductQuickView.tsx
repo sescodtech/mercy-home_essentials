@@ -14,7 +14,7 @@ interface Product {
   slug: string;
   name: string;
   price: number;
-  salePrice?: number;
+  salePrice: number | null;
   image: string;
   rating: number;
   reviewsCount: number;
