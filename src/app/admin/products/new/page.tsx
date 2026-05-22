@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Package, Image as ImageIcon, Tag, DollarSign, Save, ArrowLeft, UploadCloud } from 'lucide-react';
+import { Package, Image as ImageIcon, Tag, DollarSign, Save, ArrowLeft, UploadCloud, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function NewProductPage() {
