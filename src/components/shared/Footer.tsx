@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Truck, ShieldCheck, RotateCcw, Headphones, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Mail, Phone, MapPin, Truck, ShieldCheck, RotateCcw, Headphones, Github, Linkedin, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useToast } from '@/hooks/useToast';
@@ -123,13 +123,13 @@ export default function Footer() {
             </p>
             <div className="flex gap-3 pt-4">
               <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-accent transition-colors flex items-center justify-center">
-                <Facebook className="w-5 h-5" />
+                <Github className="w-5 h-5" />
               </a>
               <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-pink-600 transition-colors flex items-center justify-center">
-                <Instagram className="w-5 h-5" />
+                <Linkedin className="w-5 h-5" />
               </a>
               <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-blue-400 transition-colors flex items-center justify-center">
-                <Twitter className="w-5 h-5" />
+                <Send className="w-5 h-5" />
               </a>
             </div>
           </div>

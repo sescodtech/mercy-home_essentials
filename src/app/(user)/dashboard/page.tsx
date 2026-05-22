@@ -184,7 +184,7 @@ export default function UserDashboard() {
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-accent transition-colors" />
               </div>
-            </div}
+            </div>
           </div>
         </div>
       </div>
