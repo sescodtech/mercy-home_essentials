@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { Button } from '@/components/ui/button';
 import { ProductFilters, FilterState } from '@/components/product/ProductFilters';
 import { SearchBar } from '@/components/product/SearchBar';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';

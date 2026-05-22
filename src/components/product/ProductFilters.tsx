@@ -1,7 +1,7 @@
 'use client';
 
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/button';
 import { useCallback } from 'react';
 

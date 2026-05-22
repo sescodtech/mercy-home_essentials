@@ -1,8 +1,8 @@
 'use client';
 
-import { Modal } from '@/components/ui/modal';
+import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/button';
-import { Rating } from '@/components/ui/rating';
+import { Rating } from '@/components/ui/Rating';
 import { WishlistButton } from './WishlistButton';
 import { ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
