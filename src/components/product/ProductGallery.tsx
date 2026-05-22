@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Zoom } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -59,7 +59,7 @@ export const ProductGallery = ({ images, productName }: ProductGalleryProps) => 
 
         {/* Zoom Icon */}
         <div className="absolute top-4 right-4 p-2 rounded-lg bg-white/80 shadow-lg opacity-0 group-hover:opacity-100 transition-all">
-          <Zoom className="w-5 h-5 text-dark" />
+          <Search className="w-5 h-5 text-dark" />
         </div>
       </motion.div>
 

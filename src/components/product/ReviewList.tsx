@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Rating } from '@/components/ui/rating';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Rating } from '@/components/ui/Rating';
+import { Badge } from '@/components/ui/Badge';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
 interface Review {

@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Modal } from '@/components/ui/modal';
-import { Rating } from '@/components/ui/rating';
+import { Modal } from '@/components/ui/Modal';
+import { Rating } from '@/components/ui/Rating';
 import { useToast } from '@/hooks/useToast';
 
 interface ReviewFormProps {

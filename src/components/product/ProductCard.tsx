@@ -123,12 +123,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           product.stock !== undefined
             ? {
                 ...product,
-                description: product.description || 'Premium product from Mercy Home Essentials.',
+                salePrice: product.salePrice,
+                description: product.description || 'Premium product from Mercy Home launc',
               }
             : {
                 ...product,
                 stock: 10,
-                description: product.description || 'Premium product from Mercy Home Essentials.',
+                salePrice: product.salePrice,
+                description: product.description || 'Premium product from Mercy Home launc',
               }
         }
       />
