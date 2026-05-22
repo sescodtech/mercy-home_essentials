@@ -93,28 +93,28 @@ export default function ProfilePage() {
                   label="Full Name"
                   icon={<User className="w-4 h-4" />}
                   value={user.name}
-                  onChange={(val) => setUser({ ...user, name: val })}
+                  onChange={(val: string) => setUser({ ...user, name: val })}
                   disabled={!isEditing}
                 />
                 <ProfileField
                   label="Email Address"
                   icon={<Mail className="w-4 h-4" />}
                   value={user.email}
-                  onChange={(val) => setUser({ ...user, email: val })}
+                  onChange={(val: string) => setUser({ ...user, email: val })}
                   disabled={!isEditing}
                 />
                 <ProfileField
                   label="Phone Number"
                   icon={<Phone className="w-4 h-4" />}
                   value={user.phone}
-                  onChange={(val) => setUser({ ...user, phone: val })}
+                  onChange={(val: string) => setUser({ ...user, phone: val })}
                   disabled={!isEditing}
                 />
                 <ProfileField
                   label="Shipping Address"
                   icon={<MapPin className="w-4 h-4" />}
                   value={user.address}
-                  onChange={(val) => setUser({ ...user, address: val })}
+                  onChange={(val: string) => setUser({ ...user, address: val })}
                   disabled={!isEditing}
                 />
               </div>
