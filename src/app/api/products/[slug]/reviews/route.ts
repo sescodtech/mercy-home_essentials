@@ -39,10 +39,10 @@ const MOCK_REVIEWS = [
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const productId = params.id;
+    const { slug } = await params;
     const sort = request.nextUrl.searchParams.get('sort') || 'recent';
     const page = parseInt(request.nextUrl.searchParams.get('page') || '1');
     const limit = 5;
@@ -87,9 +87,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;
     const body = await request.json();
     const { rating, title, comment, userName } = body;
 
