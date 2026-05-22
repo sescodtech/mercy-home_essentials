@@ -161,7 +161,10 @@ export default function HomePage() {
 
       {/* Flash Sale Section */}
       <FlashSaleSection
-        products={MOCK_PRODUCTS.filter((p) => p.onSale).slice(0, 4)}
+        products={MOCK_PRODUCTS.filter((p) => p.onSale).slice(0, 4).map(p => ({
+          ...p,
+          discount: p.salePrice ? Math.round(((p.price - p.salePrice) / p.price) * 100) : 0
+        })) as any}
         endTime={new Date(Date.now() + 6 * 60 * 60 * 1000)}
       />
 
